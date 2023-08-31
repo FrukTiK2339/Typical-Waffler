@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		327C70A42116DA9BEB6E700B /* Pods_TypicalWaffler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3255E4FB04D8FD262B374B5B /* Pods_TypicalWaffler.framework */; };
 		EF0341832A65444100665B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0341822A65444100665B87 /* SignUpViewController.swift */; };
 		EF0341852A6545D200665B87 /* OneLineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0341842A6545D200665B87 /* OneLineTextField.swift */; };
 		EF0341872A65602C00665B87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0341862A65602C00665B87 /* LoginViewController.swift */; };
@@ -50,6 +51,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3255E4FB04D8FD262B374B5B /* Pods_TypicalWaffler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TypicalWaffler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64583287776EAEEAB5AF706B /* Pods-TypicalWaffler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypicalWaffler.release.xcconfig"; path = "Target Support Files/Pods-TypicalWaffler/Pods-TypicalWaffler.release.xcconfig"; sourceTree = "<group>"; };
+		90434CEFF66A9FF613BF7064 /* Pods-TypicalWaffler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypicalWaffler.debug.xcconfig"; path = "Target Support Files/Pods-TypicalWaffler/Pods-TypicalWaffler.debug.xcconfig"; sourceTree = "<group>"; };
 		EF0341822A65444100665B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		EF0341842A6545D200665B87 /* OneLineTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneLineTextField.swift; sourceTree = "<group>"; };
 		EF0341862A65602C00665B87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -99,17 +103,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				327C70A42116DA9BEB6E700B /* Pods_TypicalWaffler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48722EC684DB7594D34BF009 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3255E4FB04D8FD262B374B5B /* Pods_TypicalWaffler.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5F110B51D4AD4F4CA49D09D1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				90434CEFF66A9FF613BF7064 /* Pods-TypicalWaffler.debug.xcconfig */,
+				64583287776EAEEAB5AF706B /* Pods-TypicalWaffler.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		EFB486202A6175DC00E9A8AB = {
 			isa = PBXGroup;
 			children = (
 				EFB4862B2A6175DC00E9A8AB /* TypicalWaffler */,
 				EFB4862A2A6175DC00E9A8AB /* Products */,
+				5F110B51D4AD4F4CA49D09D1 /* Pods */,
+				48722EC684DB7594D34BF009 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -224,9 +249,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EFB4863D2A6175DD00E9A8AB /* Build configuration list for PBXNativeTarget "TypicalWaffler" */;
 			buildPhases = (
+				EB2F7D7701FAE0BA50EA286B /* [CP] Check Pods Manifest.lock */,
 				EFB486252A6175DC00E9A8AB /* Sources */,
 				EFB486262A6175DC00E9A8AB /* Frameworks */,
 				EFB486272A6175DC00E9A8AB /* Resources */,
+				3475699CBCDAA5DD0B500CB2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -286,6 +313,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3475699CBCDAA5DD0B500CB2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TypicalWaffler/Pods-TypicalWaffler-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TypicalWaffler/Pods-TypicalWaffler-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TypicalWaffler/Pods-TypicalWaffler-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB2F7D7701FAE0BA50EA286B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TypicalWaffler-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EFB486252A6175DC00E9A8AB /* Sources */ = {
@@ -466,6 +535,7 @@
 		};
 		EFB4863E2A6175DD00E9A8AB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90434CEFF66A9FF613BF7064 /* Pods-TypicalWaffler.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -497,6 +567,7 @@
 		};
 		EFB4863F2A6175DD00E9A8AB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64583287776EAEEAB5AF706B /* Pods-TypicalWaffler.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
