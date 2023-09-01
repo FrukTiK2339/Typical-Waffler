@@ -6,13 +6,19 @@
 //
 
 import UIKit
+import GoogleSignIn
 
-class AuthViewController: UIViewController {
+protocol AuthNavigationDelegate: AnyObject {
+    func toLoginVC()
+    func toSignUpVC()
+}
+
+class AuthViewController: UIViewController, AuthNavigationDelegate {
     
     let logoImageView = UIImageView(image: #imageLiteral(resourceName: "Logo"), contentMode: .scaleAspectFill)
     
-    let googleLabel = UILabel(text: "Войти с помощью")
-    let emailLabel = UILabel(text: "Или почтой")
+    let googleLabel = UILabel(text: "Зарегистрируйтесь с помощью")
+    let emailLabel = UILabel(text: "или почты")
     let onboardLabel = UILabel(text: "Уже зарегистрированы?")
     
     let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, isShadow: true)
@@ -26,6 +32,9 @@ class AuthViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
         googleButton.customizedGoogleButton()
+        
+        emailButton.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -50,12 +59,30 @@ class AuthViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
         ])
-        
-        
-        
     }
-
-
+    
+    @objc private func emailButtonTapped() {
+        toSignUpVC()
+    }
+    
+    @objc private func loginButtonTapped() {
+        toLoginVC()
+    }
+    
+    func toLoginVC() {
+        let loginViewController = LoginViewController()
+        loginViewController.delegate = self
+        present(loginViewController, animated: true)
+    }
+    
+    func toSignUpVC() {
+        let signUpViewController = SignUpViewController()
+        signUpViewController.delegate = self
+        present(signUpViewController, animated: true)
+    }
+    
+    
+    
 }
 
 

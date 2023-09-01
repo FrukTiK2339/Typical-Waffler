@@ -7,8 +7,9 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
 
-class SetupProfileViewController: UIViewController {
+class SetupProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let welcomeLabel = UILabel(text: "Настроить профиль", font: .avenir26())
     
@@ -30,6 +31,48 @@ class SetupProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
+        
+        goToChatsButton.addTarget(self, action: #selector(goToChatsButtonTapped), for: .touchUpInside)
+        
+        fullImageView.plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func plusButtonTapped() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .photoLibrary
+        present(imagePickerController, animated: true)
+    }
+    
+    private let currentUser: User
+    
+    init(currentUser: User) {
+        self.currentUser = currentUser
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func goToChatsButtonTapped() {
+        
+        FirestoreService.shared.saveProfiveWith(
+            id: currentUser.uid,
+            email: currentUser.email!,
+            username: fullNameTextField.text,
+            avatarImage: fullImageView.cicrleImageView.image,
+            description: aboutMeTextField.text,
+            sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { (result) in
+                switch result {
+                case .success(let mUser):
+                    let mainVC = MainTabBarController(currentUser: mUser)
+                    mainVC.modalPresentationStyle = .fullScreen
+                    self.present(mainVC, animated: true)
+                case .failure(let error):
+                    self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+                }
+            }
     }
     
     private func setupConstraints() {
@@ -66,26 +109,12 @@ class SetupProfileViewController: UIViewController {
         ])
         
     }
-}
-
-
-import SwiftUI
-
-struct SetupProfileViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
     
-    struct ContainerView: UIViewControllerRepresentable {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        let viewController = SetupProfileViewController()
-        
-        func makeUIViewController(context: Context) -> some UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            
-        }
+        picker.dismiss(animated: true)
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        fullImageView.cicrleImageView.image = image
     }
 }

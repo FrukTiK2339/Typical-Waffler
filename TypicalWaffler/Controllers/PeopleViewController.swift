@@ -7,10 +7,11 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
 
 class PeopleViewController: UIViewController {
     
-    let users = Bundle.main.decode([MUser].self, from: "users.json")
+    let users = [MUser]()//Bundle.main.decode([MUser].self, from: "users.json")
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<UserSection, MUser>?
     
@@ -25,12 +26,40 @@ class PeopleViewController: UIViewController {
         }
     }
     
+    private let currentUser: MUser
+    
+    init(currentUser: MUser) {
+        self.currentUser = currentUser
+        super.init(nibName: nil, bundle: nil)
+        title = currentUser.username
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSearchBar()
         setupCollectionView()
         createDataSource()
         reloadData(with: nil)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Выйти", style: .plain, target: self, action: #selector(logOut))
+    }
+    
+    @objc private func logOut() {
+        let ac = UIAlertController(title: nil, message: "Вы уверены, что хотите выйти?", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        ac.addAction(UIAlertAction(title: "Выйти", style: .destructive, handler: { (_) in
+            do {
+                try Auth.auth().signOut()
+                UIApplication.shared.keyWindow?.rootViewController = AuthViewController()
+            } catch {
+                print("Error Logging Out")
+            }
+        }))
+        present(ac, animated: true)
     }
     
     private func setupSearchBar() {
@@ -153,26 +182,5 @@ extension PeopleViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         reloadData(with: searchText)
-    }
-}
-
-import SwiftUI
-
-struct PeopleViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: Context) -> some UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            
-        }
     }
 }

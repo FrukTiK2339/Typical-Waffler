@@ -24,10 +24,15 @@ class SignUpViewController: UIViewController {
     let signUpButton = UIButton(title: "Создать уч. запись", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     let loginButton = UIButton(title: "Войти", titleColor: .buttonRed(), backgroundColor: .clear)
     
+    weak var delegate: AuthNavigationDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
+        
+        signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -69,6 +74,25 @@ class SignUpViewController: UIViewController {
         ])
     }
     
+    @objc private func signUpButtonTapped() {
+        print(#function)
+        AuthService.shared.register(email: emailTextField.text, password: passwordTextField.text, confirmPassword: confirmPasswordTextField.text) { (result) in
+            switch result {
+            case .success(let user):
+                let vc = SetupProfileViewController(currentUser: user)
+                self.present(vc, animated: true)
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
+        }
+    }
+    
+    @objc private func loginButtonTapped() {
+        self.dismiss(animated: true) {
+            self.delegate?.toLoginVC()
+        }
+    }
+    
 }
 
 import SwiftUI
@@ -89,5 +113,17 @@ struct SignUpViewControllerProvider: PreviewProvider {
         func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
             
         }
+    }
+}
+
+extension UIViewController {
+    
+    func showAlert(with title: String, and message: String, completion: @escaping () -> Void = {}) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "ОК", style: .default) { (_) in
+            completion()
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
     }
 }

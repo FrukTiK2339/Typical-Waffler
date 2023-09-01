@@ -74,24 +74,3 @@ class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
     }
     
 }
-
-import SwiftUI
-
-struct ActiveChatCellProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<ActiveChatCellProvider.ContainerView>) -> MainTabBarController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: ActiveChatCellProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ActiveChatCellProvider.ContainerView>) {
-            
-        }
-    }
-}
