@@ -1,0 +1,15 @@
+[
+    {
+        "friendUsername": "Bob River",
+        "friendImageString": "human1",
+        "lastMessage": "How are you?",
+        "friendId": "1"
+    },
+    {
+        "friendUsername": "John Black",
+        "friendImageString": "human2",
+        "lastMessage": "Where are you?",
+        "friendId": "2"
+    }
+]
+
