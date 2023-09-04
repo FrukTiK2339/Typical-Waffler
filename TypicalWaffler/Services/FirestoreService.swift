@@ -19,6 +19,16 @@ class FirestoreService {
         return db.collection("users")
     }
     
+    var currentUser: MUser!
+    
+    private var waitingChatsRef: CollectionReference {
+        return db.collection(["users", currentUser.id, "waitingChats"].joined(separator: "/"))
+    }
+    
+    private var activeChatsRef: CollectionReference {
+        return db.collection(["users", currentUser.id, "activeChats"].joined(separator: "/"))
+    }
+    
     func saveProfiveWith(id: String, email: String, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<MUser, Error>) -> Void) {
         
         guard Validators.isFilled(username: username, description: description, sex: sex) else {
@@ -48,9 +58,29 @@ class FirestoreService {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func createWaitingChat(message: String, receiver: MUser, completion: @escaping (Result<Void, Error>) -> Void) {
+        let reference = db.collection(["users", receiver.id, "waitingChats"].joined(separator: "/"))
+        let messageRef = reference.document(self.currentUser.id).collection("messages")
+        let message = MMessage(user: currentUser, content: message)
+        let chat = MChat(friendUsername: currentUser.username, friendImageString: currentUser.avatarStringURL, lastMessage: message.content , friendId: currentUser.id)
         
-        
-        
+        reference.document(currentUser.id).setData(chat.representation) { error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            messageRef.addDocument(data: message.representation) { error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                completion(.success(Void()))
+            }
+            
+            
+        }
     }
     
     func getUserData(user: User, completion: @escaping (Result<MUser, Error>) -> Void) {
@@ -61,10 +91,109 @@ class FirestoreService {
                     completion(.failure(UserError.cannotUnwrapData))
                     return
                 }
+                self.currentUser = mUser
                 completion(.success(mUser))
             } else {
                 completion(.failure(UserError.cannotGetUserInfo))
             }
+        }
+    }
+    
+    func deleteWaitingChat(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
+        waitingChatsRef.document(chat.friendId).delete { error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            completion(.success(Void()))
+            self.deleteMessages(chat: chat, completion: completion)
+        }
+    }
+    
+    func deleteMessages(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
+        let reference = waitingChatsRef.document(chat.friendId).collection("messages")
+        getWaitingChatMessages(chat: chat) { result in
+            switch result {
+            case .success(let messages):
+                for message in messages {
+                    guard let documentId = message.id else { return }
+                    let messageRef = reference.document(documentId)
+                    messageRef.delete { error in
+                        if let error = error {
+                            completion(.failure(error))
+                            return
+                        }
+                        
+                        completion(.success(Void()))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getWaitingChatMessages(chat: MChat, completion: @escaping (Result<[MMessage], Error>) -> Void) {
+        let reference = waitingChatsRef.document(chat.friendId).collection("messages")
+        var messages = [MMessage]()
+        reference.getDocuments { querySnaphot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            for document in querySnaphot!.documents {
+                guard let message = MMessage(document: document) else { return }
+                messages.append(message)
+            }
+            completion(.success(messages))
+        }
+    }
+    
+    func changeToActive(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
+        getWaitingChatMessages(chat: chat) { result in
+            switch result {
+            case .success(let messages):
+                self.deleteMessages(chat: chat) { result in
+                    switch result {
+                    case .success:
+                        self.createActiveChat(chat: chat, messages: messages) { result in
+                            switch result {
+                            case .success:
+                                completion(.success(Void()))
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
+    }
+    
+    func createActiveChat(chat: MChat, messages: [MMessage], completion: @escaping (Result<Void, Error>) -> Void) {
+        let messageRef = activeChatsRef.document(chat.friendId).collection("messages")
+        activeChatsRef.document(chat.friendId).setData(chat.representation) { error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            for message in messages {
+                messageRef.addDocument(data: message.representation) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    completion(.success(Void()))
+                }
+            }
+            
+            
         }
     }
 }

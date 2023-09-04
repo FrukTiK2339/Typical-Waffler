@@ -13,6 +13,7 @@
 		EF0341872A65602C00665B87 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0341862A65602C00665B87 /* LoginViewController.swift */; };
 		EF0341892A657B1400665B87 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0341882A657B1400665B87 /* SetupProfileViewController.swift */; };
 		EF03418B2A65882200665B87 /* AddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF03418A2A65882200665B87 /* AddPhotoView.swift */; };
+		EFA3ADCA2AA5C3C100A3DD5B /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA3ADC92AA5C3C100A3DD5B /* ListenerService.swift */; };
 		EFB4862D2A6175DC00E9A8AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB4862C2A6175DC00E9A8AB /* AppDelegate.swift */; };
 		EFB4862F2A6175DC00E9A8AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB4862E2A6175DC00E9A8AB /* SceneDelegate.swift */; };
 		EFB486312A6175DC00E9A8AB /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB486302A6175DC00E9A8AB /* AuthViewController.swift */; };
@@ -55,6 +56,8 @@
 		EFC3E09C2A6ACE0E00064C78 /* MChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC3E09B2A6ACE0E00064C78 /* MChat.swift */; };
 		EFC3E09E2A6ACE1300064C78 /* MUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC3E09D2A6ACE1300064C78 /* MUser.swift */; };
 		EFC3E0A02A6AD3DE00064C78 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC3E09F2A6AD3DE00064C78 /* UserCell.swift */; };
+		EFD435132AA5EC2C0000BBD7 /* WebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD435122AA5EC2C0000BBD7 /* WebImageView.swift */; };
+		EFD435152AA5F9290000BBD7 /* MMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD435142AA5F9290000BBD7 /* MMessage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +69,7 @@
 		EF0341862A65602C00665B87 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EF0341882A657B1400665B87 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
 		EF03418A2A65882200665B87 /* AddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoView.swift; sourceTree = "<group>"; };
+		EFA3ADC92AA5C3C100A3DD5B /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
 		EFB486292A6175DC00E9A8AB /* TypicalWaffler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypicalWaffler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFB4862C2A6175DC00E9A8AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFB4862E2A6175DC00E9A8AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 		EFC3E09B2A6ACE0E00064C78 /* MChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MChat.swift; sourceTree = "<group>"; };
 		EFC3E09D2A6ACE1300064C78 /* MUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MUser.swift; sourceTree = "<group>"; };
 		EFC3E09F2A6AD3DE00064C78 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		EFD435122AA5EC2C0000BBD7 /* WebImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageView.swift; sourceTree = "<group>"; };
+		EFD435142AA5F9290000BBD7 /* MMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMessage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +213,7 @@
 				EFBCD1C52A6696EB00E099C5 /* Bundle+Decodable.swift */,
 				EFB68F702AA0B9060068D739 /* InsertableTextField.swift */,
 				EFB4864A2A618BFD00E9A8AB /* UIKit */,
+				EFD435122AA5EC2C0000BBD7 /* WebImageView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -220,6 +227,7 @@
 				EFBA2A482AA1ED4D00F9126C /* FirestoreService.swift */,
 				EFBA2A4C2AA2271D00F9126C /* StorageService.swift */,
 				EFBA2A4A2AA1F81900F9126C /* UserError.swift */,
+				EFA3ADC92AA5C3C100A3DD5B /* ListenerService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -266,6 +274,7 @@
 			children = (
 				EFC3E09B2A6ACE0E00064C78 /* MChat.swift */,
 				EFC3E09D2A6ACE1300064C78 /* MUser.swift */,
+				EFD435142AA5F9290000BBD7 /* MMessage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -417,14 +426,17 @@
 				EF03418B2A65882200665B87 /* AddPhotoView.swift in Sources */,
 				EFB4864D2A618D1F00E9A8AB /* ButtonFormView.swift in Sources */,
 				EFBA2A4F2AA2292E00F9126C /* UIImage+Extension.swift in Sources */,
+				EFD435152AA5F9290000BBD7 /* MMessage.swift in Sources */,
 				EFB4862D2A6175DC00E9A8AB /* AppDelegate.swift in Sources */,
 				EFC3E0912A6AADFD00064C78 /* SelfConfigurationCell.swift in Sources */,
 				EFB486472A618A6000E9A8AB /* UILabel+Extension.swift in Sources */,
+				EFD435132AA5EC2C0000BBD7 /* WebImageView.swift in Sources */,
 				EFC3E0A02A6AD3DE00064C78 /* UserCell.swift in Sources */,
 				EFC3E08F2A6AAD5300064C78 /* WaitingChatCell.swift in Sources */,
 				EFB486452A61890400E9A8AB /* UIColor+Extension.swift in Sources */,
 				EFB486432A61887300E9A8AB /* UIFont+Extension.swift in Sources */,
 				EF0341872A65602C00665B87 /* LoginViewController.swift in Sources */,
+				EFA3ADCA2AA5C3C100A3DD5B /* ListenerService.swift in Sources */,
 				EFC3E09C2A6ACE0E00064C78 /* MChat.swift in Sources */,
 				EFBA2A432AA1D36900F9126C /* AuthService.swift in Sources */,
 				EFB4862F2A6175DC00E9A8AB /* SceneDelegate.swift in Sources */,

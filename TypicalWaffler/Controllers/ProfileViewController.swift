@@ -10,10 +10,24 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     let containerView = UIView()
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "human1") , contentMode: .scaleAspectFill)
+    let imageView = WebImageView(image: #imageLiteral(resourceName: "human1") , contentMode: .scaleAspectFill)
     let nameLabel = UILabel(text: "Peter Ben", font: .systemFont(ofSize: 20, weight: .light))
     let aboutLabel = UILabel(text: "Just write me something", font: .systemFont(ofSize: 16, weight: .light))
     let myTextField = InsertableTextField()
+    
+    private let user: MUser
+    
+    init(user: MUser) {
+        self.user = user
+        self.nameLabel.text = user.username
+        self.aboutLabel.text = user.description
+        self.imageView.set(imageURL: user.avatarStringURL)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,29 +94,16 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func addMessage() {
-        print(#function)
-    }
-}
-
-
-
-import SwiftUI
-
-struct ProfileViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewController = ProfileViewController()
-        
-        func makeUIViewController(context: Context) -> some UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            
+        guard let message = myTextField.text, message != "" else { return }
+        self.dismiss(animated: true) {
+            FirestoreService.shared.createWaitingChat(message: message, receiver: self.user) { result in
+                switch result {
+                case .success:
+                    print("Сообщение отправлено")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
 }

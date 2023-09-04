@@ -49,6 +49,14 @@ class SetupProfileViewController: UIViewController, UIImagePickerControllerDeleg
     init(currentUser: User) {
         self.currentUser = currentUser
         super.init(nibName: nil, bundle: nil)
+        
+        if let username = currentUser.displayName {
+            fullNameTextField.text = username
+        }
+        
+        if let photoURLString = currentUser.photoURL?.absoluteString {
+            fullImageView.cicrleImageView.set(imageURL: photoURLString)
+        }
     }
     
     required init?(coder: NSCoder) {

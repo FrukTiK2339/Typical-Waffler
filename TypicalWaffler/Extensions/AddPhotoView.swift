@@ -10,8 +10,8 @@ import UIKit
 
 class AddPhotoView: UIView {
     
-    let cicrleImageView: UIImageView = {
-        let imageView = UIImageView()
+    let cicrleImageView: WebImageView = {
+        let imageView = WebImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = #imageLiteral(resourceName: "avatar")
         imageView.contentMode = .center

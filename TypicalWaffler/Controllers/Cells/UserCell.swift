@@ -11,7 +11,7 @@ class UserCell: UICollectionViewCell, SelfConfiguringCell {
     
     static var reuseId: String = "UserCell"
     
-    let userImageView = UIImageView()
+    let userImageView = WebImageView()
     let userNameLabel = UILabel(text: "User name", font: .laoSangamMN20())
     let containerView = UIView()
     
@@ -66,7 +66,7 @@ class UserCell: UICollectionViewCell, SelfConfiguringCell {
     
     func configure<U>(with value: U) where U : Hashable {
         guard let user: MUser = value as? MUser else { return }
-        userImageView.image = UIImage(named: user.avatarStringURL)
+        userImageView.set(imageURL: user.avatarStringURL)
         userNameLabel.text = user.username
     }
 }

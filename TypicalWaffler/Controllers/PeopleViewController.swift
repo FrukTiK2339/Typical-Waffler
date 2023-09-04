@@ -5,13 +5,15 @@
 //  Created by Дмитрий Рыбаков on 18.07.2023.
 //
 
-import Foundation
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class PeopleViewController: UIViewController {
     
-    let users = [MUser]()//Bundle.main.decode([MUser].self, from: "users.json")
+    var users = [MUser]()
+    private var usersListener: ListenerRegistration?
+    
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<UserSection, MUser>?
     
@@ -38,14 +40,28 @@ class PeopleViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        usersListener?.remove()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSearchBar()
         setupCollectionView()
         createDataSource()
-        reloadData(with: nil)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Выйти", style: .plain, target: self, action: #selector(logOut))
+        
+        usersListener = ListenerService.shared.usersObserve(users: users, completion: { result in
+            switch result {
+                
+            case .success(let users):
+                self.users = users
+                self.reloadData(with: nil)
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
+        })
     }
     
     @objc private func logOut() {
@@ -79,6 +95,7 @@ class PeopleViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .mainWhite()
+        collectionView.delegate = self
         view.addSubview(collectionView)
         
         collectionView.register(UserCell.self, forCellWithReuseIdentifier: UserCell.reuseId)
@@ -182,5 +199,13 @@ extension PeopleViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         reloadData(with: searchText)
+    }
+}
+
+extension PeopleViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let user = self.dataSource?.itemIdentifier(for: indexPath) else { return }
+        let profileVC = ProfileViewController(user: user)
+        self.present(profileVC, animated: true)
     }
 }

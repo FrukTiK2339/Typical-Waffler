@@ -10,15 +10,44 @@ import UIKit
 class ChatRequestViewController: UIViewController {
     
     let containerView = UIView()
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "human1") , contentMode: .scaleAspectFill)
+    let imageView = WebImageView(image: #imageLiteral(resourceName: "human1") , contentMode: .scaleAspectFill)
     let nameLabel = UILabel(text: "Peter Ben", font: .systemFont(ofSize: 20, weight: .light))
     let aboutLabel = UILabel(text: "Хотите начать общение?", font: .systemFont(ofSize: 16, weight: .light))
     let acceptButton = UIButton(title: "Принять", titleColor: .white, backgroundColor: .black, isShadow: false, font: .laoSangamMN20(), cornerRadius: 10)
     let denyButton = UIButton(title: "Отклонить", titleColor: .denyRedColor(), backgroundColor: .mainWhite(), isShadow: false, font: .laoSangamMN20(), cornerRadius: 10)
     
+    private let chat: MChat
+    
+    init(chat: MChat) {
+        self.chat = chat
+        nameLabel.text = chat.friendUsername
+        imageView.set(imageURL: chat.friendImageString)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    weak var delegate: WaitingChatNavegationDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
+        denyButton.addTarget(self, action: #selector(denyButtonTapped), for: .touchUpInside)
+        acceptButton.addTarget(self, action: #selector(applyButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func denyButtonTapped() {
+        self.dismiss(animated: true) {
+            self.delegate?.removeWaitingChat(chat: self.chat)
+        }
+    }
+    
+    @objc private func applyButtonTapped() {
+        self.dismiss(animated: true) {
+            self.delegate?.changeToActive(chat: self.chat)
+        }
     }
     
     private func setupConstraints() {
@@ -31,8 +60,6 @@ class ChatRequestViewController: UIViewController {
         
         denyButton.layer.borderWidth = 1.2
         denyButton.layer.borderColor = UIColor.denyRedColor().cgColor
-        
-       
         
         containerView.backgroundColor = .mainWhite()
         containerView.layer.cornerRadius = 30
@@ -87,26 +114,5 @@ class ChatRequestViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.acceptButton.applyGradients(cornerRadius: 10)
-    }
-}
-
-import SwiftUI
-
-struct ChatRequestViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewController = ChatRequestViewController()
-        
-        func makeUIViewController(context: Context) -> some UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            
-        }
     }
 }

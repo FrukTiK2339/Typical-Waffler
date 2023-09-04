@@ -11,7 +11,7 @@ class WaitingChatCell: UICollectionViewCell, SelfConfiguringCell {
     
     static var reuseId: String = "WaitingChatCell"
     
-    let friendImageView = UIImageView()
+    let friendImageView = WebImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,8 +37,12 @@ class WaitingChatCell: UICollectionViewCell, SelfConfiguringCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        friendImageView.image = nil
+    }
+    
     func configure<U>(with value: U) {
         guard let chatModel = value as? MChat else { return }
-        friendImageView.image = UIImage(named: chatModel.userImageString)
+        friendImageView.set(imageURL: chatModel.friendImageString)
     }
 }
